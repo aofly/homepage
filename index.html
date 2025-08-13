@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邢奥飞 - 个人主页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        amber: '#F59E0B',
+                        pink: '#EC4899',
+                        purple: '#8B5CF6',
+                        teal: '#14B8A6',
+                        red: '#EF4444',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .project-card {
+                border-top: 3px solid transparent;
+                transition: all 0.3s ease;
+                height: 100%;
+            }
+            .project-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .bg-gradient-dynamic {
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                transition: background 0.5s ease;
+            }
+            .info-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .info-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-dynamic flex items-start justify-center pt-8 pb-12 px-6 md:pt-10 md:pb-16 md:px-12 lg:pt-12 lg:pb-20 lg:px-16 overflow-x-hidden">
+    <!-- 动态背景装饰 -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div id="particles" class="absolute inset-0 opacity-20"></div>
+    </div>
+
+    <!-- 主卡片 -->
+    <div class="w-full max-w-3xl bg-white/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl">
+        <!-- 优化后的个人信息头部 -->
+        <div class="relative p-6 bg-gradient-to-r from-primary/5 to-secondary/5">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <!-- 头像区域 -->
+                <div class="relative">
+                    <div class="w-28 h-28 rounded-full bg-gradient-to-br from-primary to-secondary p-1">
+                        <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAJ9AmicIoGnSDnnbuu9k_AFd104XL5bAAKbGAACSijgVO0ttK--veGpNgQ.jpg" alt="邢奥飞的个人头像" class="w-full h-full object-cover rounded-full">
+                    </div>
+                </div>
+                
+                <!-- 个人信息主体 -->
+                <div class="flex-1 text-center md:text-left">
+                    <h1 class="text-[clamp(1.8rem,5vw,2.4rem)] font-bold text-dark tracking-tight">邢奥飞</h1>
+                    
+                    <div class="flex items-center justify-center md:justify-start mt-2 text-gray-600 space-x-4">
+                        <div class="flex items-center">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span>陕西西安</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-briefcase mr-2 text-secondary"></i>
+                            <span>ICT行业</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 信息卡片区域 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <!-- 职业经历卡片 - 调整边距使其与爱好卡片高度匹配 -->
+                <div class="info-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <h2 class="text-base font-semibold text-gray-800 flex items-center">
+                        <i class="fa fa-history text-primary mr-2"></i>
+                        职业经历
+                    </h2>
+                    <div class="mt-4 space-y-3">
+                        <div class="flex items-start">
+                            <div class="w-2 h-2 rounded-full bg-primary mt-2 mr-2 flex-shrink-0"></div>
+                            <div>
+                                <p class="text-gray-700 text-sm"><span class="font-medium">现在：</span>ICT产品销售经理（服务器销售等）</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-2 h-2 rounded-full bg-primary mt-2 mr-2 flex-shrink-0"></div>
+                            <div>
+                                <p class="text-gray-700 text-sm"><span class="font-medium">之前：</span>ICT售前工程师</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 爱好卡片 -->
+                <div class="info-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <h2 class="text-base font-semibold text-gray-800 flex items-center">
+                        <i class="fa fa-heart text-secondary mr-2"></i>
+                        爱好
+                    </h2>
+                    <div class="mt-3 flex flex-wrap gap-3">
+                        <div class="flex items-center px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm">
+                            <i class="fa fa-bicycle mr-1.5"></i> 骑行
+                        </div>
+                        <div class="flex items-center px-3 py-1.5 bg-secondary/10 text-secondary rounded-full text-sm">
+                            <i class="fa fa-table-tennis mr-1.5"></i> 羽毛球
+                        </div>
+                        <div class="flex items-center px-3 py-1.5 bg-purple/10 text-purple rounded-full text-sm">
+                            <i class="fa fa-microchip mr-1.5"></i> 科技
+                        </div>
+                        <div class="flex items-center px-3 py-1.5 bg-amber/10 text-amber rounded-full text-sm">
+                            <i class="fa fa-mobile mr-1.5"></i> 数码产品
+                        </div>
+                        <div class="flex items-center px-3 py-1.5 bg-teal/10 text-teal rounded-full text-sm">
+                            <i class="fa fa-plane mr-1.5"></i> 旅行
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 试验田区域 -->
+        <div class="px-6 py-5 bg-gray-50 border-t border-gray-100">
+            <h2 class="text-lg font-bold text-dark flex items-center mb-3">
+                <i class="fa fa-flask text-primary mr-2"></i>
+                试验田
+            </h2>
+            <p class="text-gray-600 mb-3">我的一些Web项目</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- 项目卡片 1 -->
+                <a href="https://blog.aofei.me/" target="_blank" rel="noopener noreferrer" class="project-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden border-t-primary">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3 flex-shrink-0">
+                                <i class="fa fa-blog"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">个人博客</h3>
+                                <p class="text-sm text-gray-500 mt-1">技术思考与生活记录</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 项目卡片 2 -->
+                <a href="https://maoxuan.aofei.me/" target="_blank" rel="noopener noreferrer" class="project-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden border-t-secondary">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-3 flex-shrink-0">
+                                <i class="fa fa-book"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">毛选阅读</h3>
+                                <p class="text-sm text-gray-500 mt-1">毛泽东选集在线阅读</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 项目卡片 3 -->
+                <a href="https://daxie.aofei.me/" target="_blank" rel="noopener noreferrer" class="project-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden border-t-amber">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-amber/10 flex items-center justify-center text-amber mr-3 flex-shrink-0">
+                                <i class="fa fa-font"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">大写转换</h3>
+                                <p class="text-sm text-gray-500 mt-1">数字金额大写转换工具</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 项目卡片 4 -->
+                <a href="https://pansou.aofei.me/" target="_blank" rel="noopener noreferrer" class="project-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden border-t-pink">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-pink/10 flex items-center justify-center text-pink mr-3 flex-shrink-0">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">盘搜</h3>
+                                <p class="text-sm text-gray-500 mt-1">资源搜索工具</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 项目卡片 5 -->
+                <a href="https://aisuan.aofei.me/" target="_blank" rel="noopener noreferrer" class="project-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden border-t-purple">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-purple/10 flex items-center justify-center text-purple mr-3 flex-shrink-0">
+                                <i class="fa fa-calculator"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">AI计算</h3>
+                                <p class="text-sm text-gray-500 mt-1">智能计算工具集合</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 项目卡片 6 -->
+                <a href="https://fish.aofei.me/" target="_blank" rel="noopener noreferrer" class="project-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden border-t-teal">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-teal/10 flex items-center justify-center text-teal mr-3 flex-shrink-0">
+                                <i class="fa fa-fish"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">鱼儿</h3>
+                                <p class="text-sm text-gray-500 mt-1">休闲小游戏</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 项目卡片 7 -->
+                <a href="https://firework.aofei.me/" target="_blank" rel="noopener noreferrer" class="project-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden border-t-red">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-red/10 flex items-center justify-center text-red mr-3 flex-shrink-0">
+                                <i class="fa fa-fire"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">烟花</h3>
+                                <p class="text-sm text-gray-500 mt-1">绚丽的烟花效果展示</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- 保留空位1 -->
+                <div></div>
+                
+                <!-- 保留空位2 -->
+                <div></div>
+            </div>
+        </div>
+        
+        <!-- 联系我区域 -->
+        <div class="px-6 py-5 border-t border-gray-100">
+            <h2 class="text-lg font-bold text-dark flex items-center mb-3">
+                <i class="fa fa-link text-primary mr-2"></i>
+                联系我
+            </h2>
+            
+            <div class="flex flex-wrap gap-3">
+                <a href="https://space.bilibili.com/495440711" target="_blank" rel="noopener noreferrer" class="flex items-center px-4 py-2 rounded-lg bg-[#FB7299]/10 text-[#FB7299] hover:bg-[#FB7299]/20 transition-colors">
+                    <i class="fa fa-play-circle mr-2"></i>
+                    <span>Bilibili</span>
+                </a>
+                <a href="https://github.com/aofly" target="_blank" rel="noopener noreferrer" class="flex items-center px-4 py-2 rounded-lg bg-gray-800/10 text-gray-800 hover:bg-gray-800/20 transition-colors">
+                    <i class="fa fa-github mr-2"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://weibo.com/u/6264935780" target="_blank" rel="noopener noreferrer" class="flex items-center px-4 py-2 rounded-lg bg-[#E6162D]/10 text-[#E6162D] hover:bg-[#E6162D]/20 transition-colors">
+                    <i class="fa fa-weibo mr-2"></i>
+                    <span>微博</span>
+                </a>
+                <a href="mailto:i@xingaofei.com" class="flex items-center px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                    <i class="fa fa-envelope mr-2"></i>
+                    <span>邮箱</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 鼠标移动时背景渐变变化效果
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const r = Math.floor(245 + x * 10);
+            const g = Math.floor(247 + y * 10);
+            const b = Math.floor(250 + (x + y) * 5);
+            
+            const r2 = Math.floor(195 + x * 60);
+            const g2 = Math.floor(207 + y * 60);
+            const b2 = Math.floor(226 + (x + y) * 30);
+            
+            document.body.style.background = `linear-gradient(135deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${r2}, ${g2}, ${b2}) 100%)`;
+        });
+        
+        // 创建简单的粒子背景效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random() * 4 + 1;
+                
+                particle.style.position = 'absolute';
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = Math.random() > 0.5 ? '#3B82F6' : '#10B981';
+                particle.style.borderRadius = '50%';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // 添加浮动动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% {
+                    transform: translateY(0) translateX(0);
+                }
+                25% {
+                    transform: translateY(-10px) translateX(10px);
+                }
+                50% {
+                    transform: translateY(-20px) translateX(0);
+                }
+                75% {
+                    transform: translateY(-10px) translateX(-10px);
+                }
+                100% {
+                    transform: translateY(0) translateX(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // 初始化粒子
+        createParticles();
+    </script>
+</body>
+</html>
+    
