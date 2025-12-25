@@ -338,7 +338,6 @@
         
         .meta-item .material-symbols-outlined { font-size: 18px; color: var(--md-sys-color-primary); }
         
-        /* Slogan 桌面端样式 */
         .slogan {
             display: none;
             align-items: center;
@@ -384,30 +383,21 @@
             animation: charReveal 0.5s ease-out forwards;
         }
         
-        /* 动画完成后保持显示 */
         .slogan-text .char.animated {
             opacity: 1;
             transform: translateY(0);
         }
         
         @keyframes charReveal {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        /* 悬停波浪效果 */
         @keyframes charBounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
         }
         
-        /* 移动端 Slogan */
         .slogan-mobile {
             display: flex;
             align-items: center;
@@ -456,12 +446,9 @@
         }
         
         @media (min-width: 768px) {
-            .slogan-mobile {
-                display: none;
-            }
+            .slogan-mobile { display: none; }
         }
         
-        /* 呼吸光效 */
         .slogan-glow {
             position: absolute;
             width: 100%;
@@ -916,7 +903,7 @@
         
         .back-to-top {
             position: fixed;
-            bottom: 24px;
+            bottom: 100px;
             right: 24px;
             width: 56px;
             height: 56px;
@@ -991,6 +978,69 @@
             .slogan-divider { opacity: 1 !important; height: 36px !important; }
             .slogan-mobile-line { opacity: 1 !important; width: 32px !important; }
         }
+
+        /* ========== AI 助手悬停提示 ========== */
+        .ai-assistant-hint {
+            position: fixed;
+            bottom: 28px;
+            right: 115px;
+            background-color: var(--md-sys-color-surface-container-high);
+            color: var(--md-sys-color-on-surface);
+            padding: 12px 18px;
+            border-radius: var(--md-sys-shape-corner-medium);
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: var(--md-sys-elevation-level3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(10px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+            z-index: 2147483646;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-assistant-hint::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 10px solid transparent;
+            border-left-color: var(--md-sys-color-surface-container-high);
+            border-right: none;
+        }
+
+        .ai-assistant-hint.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .ai-assistant-hint .material-symbols-outlined {
+            font-size: 20px;
+            color: var(--md-sys-color-primary);
+        }
+
+        @keyframes hintBounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-5px); }
+        }
+
+        .ai-assistant-hint.pulse {
+            animation: hintBounce 0.8s ease-in-out 3;
+        }
+
+        @media (max-width: 480px) {
+            .ai-assistant-hint {
+                right: 100px;
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1002,6 +1052,12 @@
         <div class="floating-shape" style="width: 150px; height: 150px; background: var(--md-sys-color-secondary); top: 60%; right: 10%; animation-delay: -5s;"></div>
         <div class="floating-shape" style="width: 100px; height: 100px; background: var(--md-sys-color-tertiary); bottom: 20%; left: 30%; animation-delay: -10s;"></div>
         <div class="floating-shape" style="width: 80px; height: 80px; background: var(--md-sys-color-primary); top: 30%; right: 30%; animation-delay: -15s;"></div>
+    </div>
+
+    <!-- AI 助手提示气泡 -->
+    <div class="ai-assistant-hint" id="aiAssistantHint">
+        <span class="material-symbols-outlined">smart_toy</span>
+        点击咨询 AI 助手
     </div>
 
     <div class="modal-overlay" id="modalOverlay"></div>
@@ -1284,6 +1340,19 @@
         <span class="material-symbols-outlined">keyboard_arrow_up</span>
     </button>
 
+    <!-- FastGPT 智能助手 -->
+    <script
+        type="text/javascript"
+        src="https://cloud.fastgpt.cn/js/iframe.js"
+        id="chatbot-iframe" 
+        data-bot-src="https://cloud.fastgpt.cn/chat/share?shareId=cjWmzp4rM75SGx5H49PSNAsx" 
+        data-default-open="false"
+        data-drag="true"
+        data-open-icon="data:image/svg+xml;base64,PHN2ZyB0PSIxNjkwNTMyNzg1NjY0IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjQxMzIiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEyIDMyQzI0Ny4wNCAzMiAzMiAyMjQgMzIgNDY0QTQxMC4yNCA0MTAuMjQgMCAwIDAgMTcyLjQ4IDc2OEwxNjAgOTY1LjEyYTI1LjI4IDI1LjI4IDAgMCAwIDM5LjA0IDIyLjRsMTY4LTExMkE1MjguNjQgNTI4LjY0IDAgMCAwIDUxMiA4OTZjMjY0Ljk2IDAgNDgwLTE5MiA0ODAtNDMyUzc3Ni45NiAzMiA1MTIgMzJ6IG0yNDQuOCA0MTZsLTM2MS42IDMwMS43NmExMi40OCAxMi40OCAwIDAgMS0xOS44NC0xMi40OGw1OS4yLTIzMy45MmgtMTYwYTEyLjQ4IDEyLjQ4IDAgMCAxLTcuMzYtMjMuMzZsMzYxLjYtMzAxLjc2YTEyLjQ4IDEyLjQ4IDAgMCAxIDE5Ljg0IDEyLjQ4bC01OS4yIDIzMy45MmgxNjBhMTIuNDggMTIuNDggMCAwIDEgOCAyMi4wOHoiIGZpbGw9IiM0ZTgzZmQiIHAtaWQ9IjQxMzMiPjwvcGF0aD48L3N2Zz4="
+        data-close-icon="data:image/svg+xml;base64,PHN2ZyB0PSIxNjkwNTM1NDQxNTI2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjYzNjciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEyIDEwMjRBNTEyIDUxMiAwIDEgMSA1MTIgMGE1MTIgNTEyIDAgMCAxIDAgMTAyNHpNMzA1Ljk1NjU3MSAzNzAuMzk1NDI5TDQ0Ny40ODggNTEyIDMwNS45NTY1NzEgNjUzLjYwNDU3MWE0NS41NjggNDUuNTY4IDAgMSAwIDY0LjQzODg1OCA2NC40Mzg4NThMNTEyIDU3Ni41MTJsMTQxLjYwNDU3MSAxNDEuNTMxNDI5YTQ1LjU2OCA0NS41NjggMCAwIDAgNjQuNDM4ODU4LTY0LjQzODg1OEw1NzYuNTEyIDUxMmwxNDEuNTMxNDI5LTE0MS42MDQ1NzFhNDUuNTY4IDQ1LjU2OCAwIDEgMC02NC40Mzg4NTgtNjQuNDM4ODU4TDUxMiA0NDcuNDg4IDM3MC4zOTU0MjkgMzA1Ljk1NjU3MWE0NS41NjggNDUuNTY4IDAgMCAwLTY0LjQzODg1OCA2NC40Mzg4NTh6IiBmaWxsPSIjNGU4M2ZkIiBwLWlkPSI2MzY4Ij48L3BhdGg+PC9zdmc+"
+        defer
+    ></script>
+
     <script>
         window.addEventListener('load', () => {
             setTimeout(() => document.getElementById('pageLoader').classList.add('hidden'), 300);
@@ -1303,7 +1372,6 @@
                 span.style.animationDelay = `${baseDelay + index * 0.08}s`;
                 container.appendChild(span);
                 
-                // 动画结束后添加 animated 类，确保文字保持显示
                 span.addEventListener('animationend', function handler() {
                     span.classList.add('animated');
                     span.removeEventListener('animationend', handler);
@@ -1314,14 +1382,13 @@
         createAnimatedText(sloganDesktop, sloganText, 1);
         createAnimatedText(sloganMobile, sloganText, 1);
         
-        // 悬停时重新触发波浪动画（仅对已完成初始动画的字符）
         const sloganElement = document.querySelector('.slogan');
         if (sloganElement) {
             sloganElement.addEventListener('mouseenter', () => {
                 const chars = sloganDesktop.querySelectorAll('.char.animated');
                 chars.forEach((char, index) => {
                     char.style.animation = 'none';
-                    char.offsetHeight; // 触发重绘
+                    char.offsetHeight;
                     char.style.animation = `charBounce 0.4s ease-out ${index * 0.05}s`;
                 });
             });
@@ -1422,6 +1489,119 @@
                 el.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
             });
+        });
+
+        // ========== AI 助手悬停提示 ==========
+        const aiAssistantHint = document.getElementById('aiAssistantHint');
+        let isChatOpen = false;
+        let fastgptBtn = null;
+
+        // 查找并绑定 FastGPT 按钮
+        function setupFastGPTHover() {
+            const checkInterval = setInterval(() => {
+                // 查找右下角固定定位的元素
+                const fixedElements = document.querySelectorAll('*');
+                
+                fixedElements.forEach(el => {
+                    if (el.hasAttribute('data-hint-bound')) return;
+                    
+                    const style = window.getComputedStyle(el);
+                    if (style.position !== 'fixed') return;
+                    
+                    const rect = el.getBoundingClientRect();
+                    
+                    // 检查是否在右下角，且尺寸合适（FastGPT按钮约50-60px）
+                    const isBottomRight = rect.right > window.innerWidth - 80 && 
+                                          rect.bottom > window.innerHeight - 80 &&
+                                          rect.right <= window.innerWidth &&
+                                          rect.bottom <= window.innerHeight;
+                    const isSuitableSize = rect.width >= 40 && rect.width <= 80 && 
+                                           rect.height >= 40 && rect.height <= 80;
+                    const isCircular = Math.abs(rect.width - rect.height) < 10;
+                    
+                    // 排除我们自己的元素
+                    const isOurElement = el.id === 'backToTop' || 
+                                         el.id === 'aiAssistantHint' ||
+                                         el.classList.contains('back-to-top');
+                    
+                    if (isBottomRight && isSuitableSize && isCircular && !isOurElement) {
+                        el.setAttribute('data-hint-bound', 'true');
+                        fastgptBtn = el;
+                        
+                        // 绑定鼠标悬停事件
+                        el.addEventListener('mouseenter', () => {
+                            if (!isChatOpen) {
+                                aiAssistantHint.classList.add('show');
+                            }
+                        });
+                        
+                        el.addEventListener('mouseleave', () => {
+                            aiAssistantHint.classList.remove('show');
+                        });
+                        
+                        el.addEventListener('click', () => {
+                            isChatOpen = !isChatOpen;
+                            aiAssistantHint.classList.remove('show');
+                        });
+                        
+                        clearInterval(checkInterval);
+                        console.log('FastGPT 按钮悬停提示已绑定');
+                    }
+                });
+            }, 300);
+            
+            // 15秒后停止查找
+            setTimeout(() => clearInterval(checkInterval), 15000);
+        }
+
+        // 监听聊天框状态变化
+        const chatObserver = new MutationObserver(() => {
+            const iframe = document.querySelector('iframe[src*="fastgpt"]');
+            if (iframe) {
+                const style = window.getComputedStyle(iframe);
+                const isVisible = style.display !== 'none' && 
+                                 style.visibility !== 'hidden' && 
+                                 iframe.offsetParent !== null &&
+                                 parseFloat(style.opacity || 1) > 0;
+                
+                if (isVisible) {
+                    isChatOpen = true;
+                    aiAssistantHint.classList.remove('show');
+                } else if (isChatOpen && !isVisible) {
+                    isChatOpen = false;
+                }
+            }
+        });
+
+        chatObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['style', 'class']
+        });
+
+        // 首次访问自动显示提示
+        function showFirstVisitHint() {
+            const hasVisited = localStorage.getItem('ai_hint_shown');
+            if (!hasVisited) {
+                setTimeout(() => {
+                    if (!isChatOpen) {
+                        aiAssistantHint.classList.add('show', 'pulse');
+                        setTimeout(() => {
+                            aiAssistantHint.classList.remove('show', 'pulse');
+                            localStorage.setItem('ai_hint_shown', 'true');
+                        }, 5000);
+                    }
+                }, 3000);
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                setupFastGPTHover();
+                showFirstVisitHint();
+            }, 1000);
         });
     </script>
 </body>
