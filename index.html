@@ -9,7 +9,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
     
     <style>
@@ -64,8 +64,34 @@
             --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
         }
         
+        [data-theme="dark"] {
+            --md-sys-color-primary: #a8c7fa;
+            --md-sys-color-on-primary: #062e6f;
+            --md-sys-color-primary-container: #17458a;
+            --md-sys-color-on-primary-container: #d3e3fd;
+            --md-sys-color-secondary: #4fd8cb;
+            --md-sys-color-on-secondary: #003731;
+            --md-sys-color-secondary-container: #005048;
+            --md-sys-color-on-secondary-container: #a7f3ec;
+            --md-sys-color-tertiary: #cdbdff;
+            --md-sys-color-on-tertiary: #3a0093;
+            --md-sys-color-tertiary-container: #5200cc;
+            --md-sys-color-on-tertiary-container: #e5deff;
+            --md-sys-color-surface: #141218;
+            --md-sys-color-surface-container-lowest: #0f0d13;
+            --md-sys-color-surface-container-low: #1d1b20;
+            --md-sys-color-surface-container: #211f26;
+            --md-sys-color-surface-container-high: #2b2930;
+            --md-sys-color-surface-container-highest: #36343b;
+            --md-sys-color-on-surface: #e6e0e9;
+            --md-sys-color-on-surface-variant: #cac4d0;
+            --md-sys-color-outline: #938f99;
+            --md-sys-color-outline-variant: #49454f;
+            --color-github: #f0f6fc;
+        }
+        
         @media (prefers-color-scheme: dark) {
-            :root {
+            :root:not([data-theme="light"]) {
                 --md-sys-color-primary: #a8c7fa;
                 --md-sys-color-on-primary: #062e6f;
                 --md-sys-color-primary-container: #17458a;
@@ -88,6 +114,7 @@
                 --md-sys-color-on-surface-variant: #cac4d0;
                 --md-sys-color-outline: #938f99;
                 --md-sys-color-outline-variant: #49454f;
+                --color-github: #f0f6fc;
             }
         }
         
@@ -102,6 +129,7 @@
             padding: 24px 16px;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            transition: background-color var(--md-sys-motion-duration-medium), color var(--md-sys-motion-duration-medium);
         }
         
         .page-loader {
@@ -159,7 +187,8 @@
             border-radius: var(--md-sys-shape-corner-extra-large);
             overflow: hidden;
             box-shadow: var(--md-sys-elevation-level1);
-            transition: box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+            transition: box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard),
+                        background-color var(--md-sys-motion-duration-medium);
         }
         
         .md3-card:hover { box-shadow: var(--md-sys-elevation-level2); }
@@ -169,6 +198,7 @@
             padding: 32px 24px;
             position: relative;
             overflow: hidden;
+            transition: background var(--md-sys-motion-duration-medium);
         }
         
         .header-section::before {
@@ -177,6 +207,56 @@
             inset: 0;
             background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.3) 0%, transparent 50%);
             pointer-events: none;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--md-sys-shape-corner-full);
+            border: none;
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--md-sys-elevation-level2);
+            transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+            z-index: 10;
+            overflow: hidden;
+        }
+        
+        .theme-toggle:hover {
+            box-shadow: var(--md-sys-elevation-level3);
+            transform: scale(1.05);
+        }
+        
+        .theme-toggle:active { transform: scale(0.95); }
+        
+        .theme-toggle .material-symbols-outlined {
+            font-size: 24px;
+            transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized);
+        }
+        
+        .theme-toggle .icon-light,
+        .theme-toggle .icon-dark {
+            position: absolute;
+            transition: opacity var(--md-sys-motion-duration-short), 
+                        transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized);
+        }
+        
+        .theme-toggle .icon-light { opacity: 1; transform: rotate(0deg); }
+        .theme-toggle .icon-dark { opacity: 0; transform: rotate(-90deg); }
+        
+        [data-theme="dark"] .theme-toggle .icon-light { opacity: 0; transform: rotate(90deg); }
+        [data-theme="dark"] .theme-toggle .icon-dark { opacity: 1; transform: rotate(0deg); }
+        
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) .theme-toggle .icon-light { opacity: 0; transform: rotate(90deg); }
+            :root:not([data-theme="light"]) .theme-toggle .icon-dark { opacity: 1; transform: rotate(0deg); }
         }
         
         .profile-container {
@@ -188,7 +268,26 @@
             z-index: 1;
         }
         
-        @media (min-width: 768px) { .profile-container { flex-direction: row; } }
+        @media (min-width: 768px) {
+            .profile-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        
+        .profile-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-left {
+                flex-direction: row;
+            }
+        }
         
         .avatar-wrapper { position: relative; flex-shrink: 0; }
         
@@ -215,7 +314,7 @@
         
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         
-        .profile-info { text-align: center; flex: 1; }
+        .profile-info { text-align: center; }
         @media (min-width: 768px) { .profile-info { text-align: left; } }
         
         .profile-name {
@@ -239,6 +338,140 @@
         
         .meta-item .material-symbols-outlined { font-size: 18px; color: var(--md-sys-color-primary); }
         
+        /* Slogan 桌面端样式 */
+        .slogan {
+            display: none;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 20px;
+            margin-right: 60px;
+        }
+        
+        @media (min-width: 768px) {
+            .slogan {
+                display: flex;
+            }
+        }
+        
+        .slogan-divider {
+            width: 2px;
+            height: 0;
+            background: linear-gradient(180deg, var(--md-sys-color-primary), var(--md-sys-color-secondary));
+            border-radius: 1px;
+            animation: dividerGrow 0.6s ease-out 0.8s forwards;
+        }
+        
+        @keyframes dividerGrow {
+            to { height: 36px; }
+        }
+        
+        .slogan-text {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--md-sys-color-on-primary-container);
+            letter-spacing: 0.15em;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .slogan-text .char {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: charReveal 0.5s ease-out forwards;
+            display: inline-block;
+        }
+        
+        @keyframes charReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 悬停效果 */
+        .slogan:hover .slogan-text .char {
+            animation: charBounce 0.4s ease-out;
+        }
+        
+        @keyframes charBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        
+        /* 移动端 Slogan */
+        .slogan-mobile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        
+        .slogan-mobile-line {
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--md-sys-color-primary));
+            animation: lineExpand 0.6s ease-out 0.8s forwards;
+        }
+        
+        .slogan-mobile-line.right {
+            background: linear-gradient(90deg, var(--md-sys-color-primary), transparent);
+        }
+        
+        @keyframes lineExpand {
+            to { width: 32px; }
+        }
+        
+        .slogan-mobile-text {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            color: var(--md-sys-color-on-surface-variant);
+            letter-spacing: 0.1em;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .slogan-mobile-text .char {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: charReveal 0.4s ease-out forwards;
+            display: inline-block;
+        }
+        
+        @media (min-width: 768px) {
+            .slogan-mobile {
+                display: none;
+            }
+        }
+        
+        /* 呼吸光效 */
+        .slogan-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(ellipse at center, var(--md-sys-color-primary) 0%, transparent 70%);
+            opacity: 0;
+            filter: blur(20px);
+            animation: glowPulse 3s ease-in-out infinite 1.5s;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 0.15; transform: scale(1.1); }
+        }
+        
+        .slogan-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         .info-cards-container { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 24px; }
         @media (min-width: 768px) { .info-cards-container { grid-template-columns: repeat(2, 1fr); } }
         
@@ -316,7 +549,10 @@
         }
         
         .md3-filter-chip:hover { background-color: rgba(0, 0, 0, 0.08); }
-        @media (prefers-color-scheme: dark) { .md3-filter-chip:hover { background-color: rgba(255, 255, 255, 0.08); } }
+        [data-theme="dark"] .md3-filter-chip:hover { background-color: rgba(255, 255, 255, 0.08); }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) .md3-filter-chip:hover { background-color: rgba(255, 255, 255, 0.08); }
+        }
         
         .md3-filter-chip .material-symbols-outlined { font-size: 18px; }
         .md3-filter-chip.chip-primary { border-color: var(--md-sys-color-primary); color: var(--md-sys-color-primary); }
@@ -447,15 +683,24 @@
         .project-card-red .project-icon { background-color: #fee2e2; }
         .project-card-red .project-icon .material-symbols-outlined { color: #b91c1c; }
         
+        [data-theme="dark"] .project-card-amber .project-icon { background-color: #78350f; }
+        [data-theme="dark"] .project-card-amber .project-icon .material-symbols-outlined { color: #fcd34d; }
+        [data-theme="dark"] .project-card-pink .project-icon { background-color: #831843; }
+        [data-theme="dark"] .project-card-pink .project-icon .material-symbols-outlined { color: #f9a8d4; }
+        [data-theme="dark"] .project-card-teal .project-icon { background-color: #134e4a; }
+        [data-theme="dark"] .project-card-teal .project-icon .material-symbols-outlined { color: #5eead4; }
+        [data-theme="dark"] .project-card-red .project-icon { background-color: #7f1d1d; }
+        [data-theme="dark"] .project-card-red .project-icon .material-symbols-outlined { color: #fca5a5; }
+        
         @media (prefers-color-scheme: dark) {
-            .project-card-amber .project-icon { background-color: #78350f; }
-            .project-card-amber .project-icon .material-symbols-outlined { color: #fcd34d; }
-            .project-card-pink .project-icon { background-color: #831843; }
-            .project-card-pink .project-icon .material-symbols-outlined { color: #f9a8d4; }
-            .project-card-teal .project-icon { background-color: #134e4a; }
-            .project-card-teal .project-icon .material-symbols-outlined { color: #5eead4; }
-            .project-card-red .project-icon { background-color: #7f1d1d; }
-            .project-card-red .project-icon .material-symbols-outlined { color: #fca5a5; }
+            :root:not([data-theme="light"]) .project-card-amber .project-icon { background-color: #78350f; }
+            :root:not([data-theme="light"]) .project-card-amber .project-icon .material-symbols-outlined { color: #fcd34d; }
+            :root:not([data-theme="light"]) .project-card-pink .project-icon { background-color: #831843; }
+            :root:not([data-theme="light"]) .project-card-pink .project-icon .material-symbols-outlined { color: #f9a8d4; }
+            :root:not([data-theme="light"]) .project-card-teal .project-icon { background-color: #134e4a; }
+            :root:not([data-theme="light"]) .project-card-teal .project-icon .material-symbols-outlined { color: #5eead4; }
+            :root:not([data-theme="light"]) .project-card-red .project-icon { background-color: #7f1d1d; }
+            :root:not([data-theme="light"]) .project-card-red .project-icon .material-symbols-outlined { color: #fca5a5; }
         }
         
         .contact-section { padding: 24px; padding-top: 32px; background-color: var(--md-sys-color-surface); }
@@ -501,10 +746,14 @@
         .btn-email { background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
         .btn-email .state-layer { background-color: var(--md-sys-color-primary); }
         
+        [data-theme="dark"] .btn-wechat { background-color: #14532d; color: #86efac; }
+        [data-theme="dark"] .btn-bilibili { background-color: #831843; color: #f9a8d4; }
+        [data-theme="dark"] .btn-weibo { background-color: #7f1d1d; color: #fca5a5; }
+        
         @media (prefers-color-scheme: dark) {
-            .btn-wechat { background-color: #14532d; color: #86efac; }
-            .btn-bilibili { background-color: #831843; color: #f9a8d4; }
-            .btn-weibo { background-color: #7f1d1d; color: #fca5a5; }
+            :root:not([data-theme="light"]) .btn-wechat { background-color: #14532d; color: #86efac; }
+            :root:not([data-theme="light"]) .btn-bilibili { background-color: #831843; color: #f9a8d4; }
+            :root:not([data-theme="light"]) .btn-weibo { background-color: #7f1d1d; color: #fca5a5; }
         }
         
         .modal-overlay {
@@ -541,7 +790,8 @@
             padding: 24px;
             position: relative;
             transform: scale(0.9) translateY(20px);
-            transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized);
+            transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized),
+                        background-color var(--md-sys-motion-duration-medium);
             max-width: calc(100vw - 48px);
             max-height: calc(100vh - 48px);
             overflow: auto;
@@ -699,6 +949,7 @@
             z-index: -1;
             overflow: hidden;
             background: linear-gradient(135deg, var(--md-sys-color-surface) 0%, var(--md-sys-color-surface-container) 100%);
+            transition: background var(--md-sys-motion-duration-medium);
         }
         
         .floating-shape {
@@ -721,6 +972,9 @@
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
             .main-container { opacity: 1; transform: none; }
             .page-loader { display: none; }
+            .slogan-text .char, .slogan-mobile-text .char { opacity: 1; transform: none; }
+            .slogan-divider { height: 36px; }
+            .slogan-mobile-line { width: 32px; }
         }
     </style>
 </head>
@@ -760,22 +1014,42 @@
     <div class="main-container" id="main-content">
         <main class="md3-card">
             <header class="header-section">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色模式" title="切换主题">
+                    <span class="material-symbols-outlined icon-light">light_mode</span>
+                    <span class="material-symbols-outlined icon-dark">dark_mode</span>
+                </button>
+                
                 <div class="profile-container">
-                    <div class="avatar-wrapper">
-                        <div class="avatar-ring"></div>
-                        <img src="https://raw.githubusercontent.com/aofly/images/main/logo.jpg" alt="邢奥飞的个人头像" class="avatar" width="120" height="120">
+                    <div class="profile-left">
+                        <div class="avatar-wrapper">
+                            <div class="avatar-ring"></div>
+                            <img src="https://raw.githubusercontent.com/aofly/images/main/logo.jpg" alt="邢奥飞的个人头像" class="avatar" width="120" height="120">
+                        </div>
+                        <div class="profile-info">
+                            <h1 class="profile-name">邢奥飞</h1>
+                            <div class="profile-meta">
+                                <div class="meta-item">
+                                    <span class="material-symbols-outlined">location_on</span>
+                                    <span>陕西西安</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="material-symbols-outlined">work</span>
+                                    <span>ICT行业</span>
+                                </div>
+                            </div>
+                            <div class="slogan-mobile">
+                                <span class="slogan-mobile-line"></span>
+                                <p class="slogan-mobile-text" id="sloganMobile"></p>
+                                <span class="slogan-mobile-line right"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="profile-info">
-                        <h1 class="profile-name">邢奥飞</h1>
-                        <div class="profile-meta">
-                            <div class="meta-item">
-                                <span class="material-symbols-outlined">location_on</span>
-                                <span>陕西西安</span>
-                            </div>
-                            <div class="meta-item">
-                                <span class="material-symbols-outlined">work</span>
-                                <span>ICT行业</span>
-                            </div>
+                    
+                    <div class="slogan">
+                        <div class="slogan-divider"></div>
+                        <div class="slogan-wrapper">
+                            <div class="slogan-glow"></div>
+                            <p class="slogan-text" id="sloganDesktop"></p>
                         </div>
                     </div>
                 </div>
@@ -1000,6 +1274,67 @@
             setTimeout(() => document.getElementById('pageLoader').classList.add('hidden'), 300);
         });
         
+        // Slogan 文字动画
+        const sloganText = '热爱科技，享受生活';
+        const sloganDesktop = document.getElementById('sloganDesktop');
+        const sloganMobile = document.getElementById('sloganMobile');
+        
+        function createAnimatedText(container, text, baseDelay) {
+            container.innerHTML = '';
+            [...text].forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                span.style.animationDelay = `${baseDelay + index * 0.08}s`;
+                container.appendChild(span);
+            });
+        }
+        
+        createAnimatedText(sloganDesktop, sloganText, 1);
+        createAnimatedText(sloganMobile, sloganText, 1);
+        
+        // 悬停时重新触发波浪动画
+        document.querySelector('.slogan')?.addEventListener('mouseenter', () => {
+            const chars = sloganDesktop.querySelectorAll('.char');
+            chars.forEach((char, index) => {
+                char.style.animation = 'none';
+                char.offsetHeight; // 触发重绘
+                char.style.animation = `charBounce 0.4s ease-out ${index * 0.05}s`;
+            });
+        });
+        
+        // 主题切换
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const getCurrentTheme = () => localStorage.getItem('theme') || getSystemTheme();
+        
+        const applyTheme = (theme) => {
+            html.setAttribute('data-theme', theme);
+        };
+        
+        const initTheme = () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) applyTheme(savedTheme);
+        };
+        
+        const toggleTheme = () => {
+            const newTheme = getCurrentTheme() === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+            themeToggle.style.transform = 'scale(0.9)';
+            setTimeout(() => themeToggle.style.transform = '', 150);
+        };
+        
+        initTheme();
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
+        });
+        
+        // 微信弹窗
         const wechatBtn = document.getElementById('wechatBtn');
         const wechatModal = document.getElementById('wechatModal');
         const modalOverlay = document.getElementById('modalOverlay');
@@ -1023,28 +1358,26 @@
             if (e.key === 'Escape' && wechatModal.classList.contains('show')) closeModal();
         });
         
+        // 运行时间
         const startDate = new Date('2025-08-13T13:47:00');
         
         function updateUptime() {
-            const now = new Date();
-            const diff = now - startDate;
-            
+            const diff = new Date() - startDate;
             if (diff < 0) {
                 document.getElementById('uptime').textContent = '0天0时0分0秒';
                 return;
             }
-            
             const days = Math.floor(diff / (24 * 60 * 60 * 1000));
             const hours = Math.floor((diff % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
             const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
             const seconds = Math.floor((diff % (60 * 1000)) / 1000);
-            
             document.getElementById('uptime').textContent = `${days}天${hours}时${minutes}分${seconds}秒`;
         }
         
         updateUptime();
         setInterval(updateUptime, 1000);
         
+        // 返回顶部
         const backToTop = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             backToTop.classList.toggle('show', window.scrollY > 300);
@@ -1054,7 +1387,8 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
         
-        document.querySelectorAll('.md3-tonal-button, .md3-elevated-card').forEach(el => {
+        // 涟漪效果
+        document.querySelectorAll('.md3-tonal-button, .md3-elevated-card, .theme-toggle').forEach(el => {
             el.addEventListener('click', (e) => {
                 const rect = el.getBoundingClientRect();
                 const ripple = document.createElement('span');
@@ -1065,15 +1399,6 @@
                 setTimeout(() => ripple.remove(), 600);
             });
         });
-        
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            document.addEventListener('mousemove', (e) => {
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
-                document.body.style.setProperty('--md-sys-color-surface', `hsl(${250 + x * 20}, 100%, 99%)`);
-                document.body.style.setProperty('--md-sys-color-surface-container', `hsl(${270 + y * 30}, 30%, 96%)`);
-            });
-        }
     </script>
 </body>
 </html>
