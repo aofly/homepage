@@ -355,14 +355,16 @@
         
         .slogan-divider {
             width: 2px;
-            height: 0;
+            height: 36px;
             background: linear-gradient(180deg, var(--md-sys-color-primary), var(--md-sys-color-secondary));
             border-radius: 1px;
-            animation: dividerGrow 0.6s ease-out 0.8s forwards;
+            opacity: 0;
+            animation: dividerFadeIn 0.6s ease-out 0.8s forwards;
         }
         
-        @keyframes dividerGrow {
-            to { height: 36px; }
+        @keyframes dividerFadeIn {
+            from { opacity: 0; height: 0; }
+            to { opacity: 1; height: 36px; }
         }
         
         .slogan-text {
@@ -376,24 +378,30 @@
         }
         
         .slogan-text .char {
+            display: inline-block;
             opacity: 0;
             transform: translateY(20px);
             animation: charReveal 0.5s ease-out forwards;
-            display: inline-block;
+        }
+        
+        /* 动画完成后保持显示 */
+        .slogan-text .char.animated {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         @keyframes charReveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
         
-        /* 悬停效果 */
-        .slogan:hover .slogan-text .char {
-            animation: charBounce 0.4s ease-out;
-        }
-        
+        /* 悬停波浪效果 */
         @keyframes charBounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
@@ -410,18 +418,20 @@
         }
         
         .slogan-mobile-line {
-            width: 0;
+            width: 32px;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--md-sys-color-primary));
-            animation: lineExpand 0.6s ease-out 0.8s forwards;
+            opacity: 0;
+            animation: lineFadeIn 0.6s ease-out 0.8s forwards;
         }
         
         .slogan-mobile-line.right {
             background: linear-gradient(90deg, var(--md-sys-color-primary), transparent);
         }
         
-        @keyframes lineExpand {
-            to { width: 32px; }
+        @keyframes lineFadeIn {
+            from { opacity: 0; width: 0; }
+            to { opacity: 1; width: 32px; }
         }
         
         .slogan-mobile-text {
@@ -434,10 +444,15 @@
         }
         
         .slogan-mobile-text .char {
+            display: inline-block;
             opacity: 0;
             transform: translateY(15px);
             animation: charReveal 0.4s ease-out forwards;
-            display: inline-block;
+        }
+        
+        .slogan-mobile-text .char.animated {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         @media (min-width: 768px) {
@@ -456,7 +471,7 @@
             background: radial-gradient(ellipse at center, var(--md-sys-color-primary) 0%, transparent 70%);
             opacity: 0;
             filter: blur(20px);
-            animation: glowPulse 3s ease-in-out infinite 1.5s;
+            animation: glowPulse 3s ease-in-out infinite 2s;
             pointer-events: none;
             z-index: -1;
         }
@@ -972,9 +987,9 @@
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
             .main-container { opacity: 1; transform: none; }
             .page-loader { display: none; }
-            .slogan-text .char, .slogan-mobile-text .char { opacity: 1; transform: none; }
-            .slogan-divider { height: 36px; }
-            .slogan-mobile-line { width: 32px; }
+            .slogan-text .char, .slogan-mobile-text .char { opacity: 1 !important; transform: none !important; }
+            .slogan-divider { opacity: 1 !important; height: 36px !important; }
+            .slogan-mobile-line { opacity: 1 !important; width: 32px !important; }
         }
     </style>
 </head>
@@ -1287,21 +1302,30 @@
                 span.textContent = char === ' ' ? '\u00A0' : char;
                 span.style.animationDelay = `${baseDelay + index * 0.08}s`;
                 container.appendChild(span);
+                
+                // 动画结束后添加 animated 类，确保文字保持显示
+                span.addEventListener('animationend', function handler() {
+                    span.classList.add('animated');
+                    span.removeEventListener('animationend', handler);
+                });
             });
         }
         
         createAnimatedText(sloganDesktop, sloganText, 1);
         createAnimatedText(sloganMobile, sloganText, 1);
         
-        // 悬停时重新触发波浪动画
-        document.querySelector('.slogan')?.addEventListener('mouseenter', () => {
-            const chars = sloganDesktop.querySelectorAll('.char');
-            chars.forEach((char, index) => {
-                char.style.animation = 'none';
-                char.offsetHeight; // 触发重绘
-                char.style.animation = `charBounce 0.4s ease-out ${index * 0.05}s`;
+        // 悬停时重新触发波浪动画（仅对已完成初始动画的字符）
+        const sloganElement = document.querySelector('.slogan');
+        if (sloganElement) {
+            sloganElement.addEventListener('mouseenter', () => {
+                const chars = sloganDesktop.querySelectorAll('.char.animated');
+                chars.forEach((char, index) => {
+                    char.style.animation = 'none';
+                    char.offsetHeight; // 触发重绘
+                    char.style.animation = `charBounce 0.4s ease-out ${index * 0.05}s`;
+                });
             });
-        });
+        }
         
         // 主题切换
         const themeToggle = document.getElementById('themeToggle');
